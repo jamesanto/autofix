@@ -1,8 +1,8 @@
 lazy val V = _root_.scalafix.sbt.BuildInfo
 inThisBuild(
   List(
-    scalaVersion := V.scala212,
-    addCompilerPlugin(scalafixSemanticdb),
+    scalaVersion := "2.13.2",
+    addCompilerPlugin(scalafixSemanticdb("4.3.10")),
     scalacOptions ++= List(
       "-Yrangepos"
     )
@@ -13,7 +13,7 @@ skip in publish := true
 
 lazy val rules = project.settings(
   moduleName := "autofix",
-  version := "3.1.0.0",
+  version := "3.1.0.1",
   crossScalaVersions := List("2.12.8", "2.11.12"),
   organization := "org.scalatest",
     homepage := Some(url("https://github.com/scalatest/autofix")),
@@ -32,7 +32,7 @@ lazy val rules = project.settings(
         url("https://github.com/cheeseng")
       )
     ), 
-    libraryDependencies += "ch.epfl.scala" %% "scalafix-core" % V.scalafixVersion, 
+    libraryDependencies += "ch.epfl.scala" %% "scalafix-core" % "0.9.15+46-4c23fac1-SNAPSHOT", 
     publishTo := {
       val nexus = "https://oss.sonatype.org/"
       Some("publish-releases" at nexus + "service/local/staging/deploy/maven2")
@@ -78,7 +78,7 @@ lazy val output = project.settings(
 lazy val tests = project
   .settings(
     skip in publish := true,
-    libraryDependencies += "ch.epfl.scala" % "scalafix-testkit" % V.scalafixVersion % Test cross CrossVersion.full,
+    libraryDependencies += "ch.epfl.scala" % "scalafix-testkit" % "0.9.15+46-4c23fac1-SNAPSHOT" % Test cross CrossVersion.full,
     scalafixTestkitOutputSourceDirectories :=
       sourceDirectories.in(output, Compile).value,
     scalafixTestkitInputSourceDirectories :=
