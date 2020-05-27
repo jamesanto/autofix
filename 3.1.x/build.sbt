@@ -13,7 +13,7 @@ skip in publish := true
 
 lazy val rules = project.settings(
   moduleName := "autofix",
-  version := "3.1.0.1",
+  version := "3.1.0.2-SNAPSHOT",
   crossScalaVersions := List("2.12.8", "2.11.12"),
   organization := "org.scalatest",
     homepage := Some(url("https://github.com/scalatest/autofix")),
@@ -32,18 +32,13 @@ lazy val rules = project.settings(
         url("https://github.com/cheeseng")
       )
     ), 
-    libraryDependencies += "ch.epfl.scala" %% "scalafix-core" % "0.9.15+46-4c23fac1-SNAPSHOT", 
-    publishTo := {
-      val nexus = "https://oss.sonatype.org/"
-      Some("publish-releases" at nexus + "service/local/staging/deploy/maven2")
-    },
+    libraryDependencies += "ch.epfl.scala" %% "scalafix-core" % "0.9.15.2-SNAPSHOT", 
+    credentials += Credentials("Sonatype Nexus Repository Manager", "127.0.0.1", "admin", "admin"),
+    publishTo := Some("Sonatype Nexus Repository Manager" at "http://127.0.0.1:8081/repository/maven-snapshots"),
     publishMavenStyle := true,
     publishArtifact in Test := false,
-    pomIncludeRepository := { _ => false },
-    credentials += Credentials(Path.userHome / ".ivy2" / ".credentials"),
-    pgpSecretRing := file((Path.userHome / ".gnupg" / "secring.gpg").getAbsolutePath),
-    pgpPassphrase := None
-)
+    pomIncludeRepository := { _ => false }
+  )
 
 lazy val input = project.settings(
   skip in publish := true,
@@ -78,7 +73,7 @@ lazy val output = project.settings(
 lazy val tests = project
   .settings(
     skip in publish := true,
-    libraryDependencies += "ch.epfl.scala" % "scalafix-testkit" % "0.9.15+46-4c23fac1-SNAPSHOT" % Test cross CrossVersion.full,
+    libraryDependencies += "ch.epfl.scala" % "scalafix-testkit" % "0.9.15.2-SNAPSHOT" % Test cross CrossVersion.full,
     scalafixTestkitOutputSourceDirectories :=
       sourceDirectories.in(output, Compile).value,
     scalafixTestkitInputSourceDirectories :=
